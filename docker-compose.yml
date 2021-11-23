@@ -3,3 +3,6 @@ services:
     build: .
     volumes:
       - .:/usr/src/app
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
