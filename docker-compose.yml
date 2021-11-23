@@ -2,7 +2,7 @@ services:
   ground-station:
     build: .
     volumes:
-      - ./src:/usr/app/src
+      - .:/usr/app
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1

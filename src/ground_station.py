@@ -9,6 +9,7 @@ TODO:
 import time
 import signal
 import sys
+from settings.settings import Settings
 
 
 class GroundStation():
@@ -17,8 +18,11 @@ class GroundStation():
         signal.signal(signal.SIGINT, self.clean_up)
         signal.signal(signal.SIGTERM, self.clean_up)
 
+        self.settings = Settings()
+
     def start(self):
         self.running = True
+        self.settings.print()
 
         self.run()
 
