@@ -1,0 +1,5 @@
+services:
+  ground-station:
+    build: .
+    volumes:
+      - .:/usr/src/app
