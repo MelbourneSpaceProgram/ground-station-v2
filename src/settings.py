@@ -12,16 +12,18 @@ Options (TODO):
 import json
 from typing import Any, Dict
 
-from utils import get_root_dir
+from utils import get_root_dir, get_data_dir
 
 
-SETTINGS_FILE = get_root_dir() / "settings.json"
+DEFAULT_SETTINGS_FILE = get_root_dir() / "default.json"
+SETTINGS_FILE = get_data_dir() / "settings.json"
 
 _cache: Dict[str, Any] = {}
 
 
 def _load_settings() -> Dict[str, Any]:
-    with open(SETTINGS_FILE, 'r') as file:
+    path = SETTINGS_FILE if SETTINGS_FILE.exists() else DEFAULT_SETTINGS_FILE
+    with open(path, 'r') as file:
         return json.load(file)
 
 

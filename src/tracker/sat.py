@@ -4,9 +4,9 @@ from enum import Enum
 from pathlib import Path
 
 from skyfield.api import load
-from utils import get_root_dir
+from utils import get_data_dir
 
-TLE_DIR = get_root_dir() / "tle"
+TLE_DIR = get_data_dir() / "tle"
 
 
 class Satellite():
@@ -31,7 +31,6 @@ class Satellite():
 
         url = f'https://celestrak.com/satcat/tle.php?CATNR={ID}'
         filename = TLE_DIR / f'{ID}.txt'
-
         self.data = load.tle_file(url, filename=filename.as_posix())[0]
 
         if not self.data:
@@ -39,7 +38,7 @@ class Satellite():
 
         # Check whether we need to redownload the TLE
         ts = load.timescale()
-        if abs(ts.now() - self.data.epoch):
+        if abs(ts.now() - self.data.epoch) > 14:
             self.data = load.tle_file(url, filename=filename.as_posix(),
                                       reload=True)[0]
 

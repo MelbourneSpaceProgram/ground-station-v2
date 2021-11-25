@@ -3,6 +3,7 @@ services:
     build: .
     volumes:
       - .:/usr/app
+      - /app/data
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
