@@ -36,7 +36,7 @@ class Satellite():
         if not self.data:
             raise Exception("Failed to load TLE for " + ID)
 
-        # Check whether we need to redownload the TLE
+        # Check if the TLE is out of date
         ts = load.timescale()
         if abs(ts.now() - self.data.epoch) > 14:
             self.data = load.tle_file(url, filename=filename.as_posix(),

@@ -3,8 +3,8 @@
 import signal
 import sys
 import time
+from timeit import default_timer as timer
 
-import settings
 from tracker.sat_tracker import SatelliteTracker
 
 
@@ -22,11 +22,12 @@ class GroundStation():
         signal.signal(signal.SIGINT, self.clean_up)
         signal.signal(signal.SIGTERM, self.clean_up)
 
-        self.sat_tracker = SatelliteTracker(settings.get("satellites"))
+        self.sat_tracker = SatelliteTracker()
 
     def start(self) -> None:
         """Start the ground station."""
         self.running = True
+        self.curr_time = timer()
         self.run()
 
     def clean_up(self, signal, frame) -> None:  # type: ignore
@@ -38,5 +39,8 @@ class GroundStation():
         """Run the ground station."""
         while(self.running):
             print("Running")
+            elapsed = timer() - self.curr_time
+            print(elapsed)
+            self.curr_time = timer()
             self.sat_tracker.update()
             time.sleep(1)
