@@ -1,11 +1,11 @@
 """This module contains the logic for tracking satellite passes."""
 
+from datetime import datetime, timedelta
 from typing import Dict, Tuple
 
-from datetime import timedelta
 import pytz  # type: ignore
 import settings
-from skyfield.api import load, wgs84, Time
+from skyfield.api import EarthSatellite, Time, Timescale, load, wgs84
 
 from .sat import Satellite
 
@@ -24,7 +24,7 @@ class SatelliteTracker():
       ground_station -- the position of the ground station
     """
 
-    def __init__(self) -> None:
+    def __init__(self, ts: Timescale = None) -> None:
         """Init tracker with data of tracked satellites.
 
         Arguments:
@@ -33,7 +33,7 @@ class SatelliteTracker():
           lon: longitude of the ground station
         """
         # Init timescale
-        self.ts = load.timescale()
+        self.ts = ts if ts else load.timescale()
 
         # Init ground station position
         lat = settings.get("lat")
@@ -50,13 +50,17 @@ class SatelliteTracker():
 
         # Load satellites
         self.sats: Dict[str, Satellite] = {}
-        self.passes: Dict[str, Tuple[Time, Time]] = {}
+        self.passes: Dict[str, Tuple[datetime, datetime]] = {}
         for ID in settings.get("satellites"):
             sat = Satellite(ID, self.ts)
             self.sats[ID] = sat
-            self.passes[ID] = self.compute_next_pass(sat)
+            self.passes[ID] = self.compute_next_pass(sat.data)
 
         print("Loaded: " + ", ".join([ID for ID in self.sats.keys()]))
+
+    def _convert_time(self, time: datetime) -> Time:
+        dt = self.tz.localize(time)
+        return self.ts.from_datetime(dt)
 
     def add_satellite(self, ID: str) -> None:
         """Add satellite to tracking list."""
@@ -69,23 +73,30 @@ class SatelliteTracker():
         self.sats.pop(ID)
         settings.set("satellites", self.sats.keys())
 
-    def compute_next_pass(self, sat: Satellite) -> Tuple[Time, Time]:
+    def compute_next_pass(self, sat: EarthSatellite, t0: datetime = None,
+                          t1: datetime = None) -> Tuple[datetime, datetime]:
         """Compute the times when the satellite will rise and set next."""
-        start = self.ts.now()
-        # REVIEW: Search over the next 24 hours (is this sufficient?)
-        end = self.ts.utc(start.utc_datetime() + timedelta(days=1))
+        start = self._convert_time(t0) if t0 is not None else self.ts.now()
 
-        times, events = sat.data.find_events(self.ground_station, start, end,
-                                             altitude_degrees=self.min_alt)
+        # REVIEW: Search over the next 24 hours (is this sufficient?)
+        end = (self._convert_time(t1) if t1 is not None
+               else self.ts.from_datetime(start.utc_datetime()
+                                          + timedelta(days=1)))
+
+        times, events = sat.find_events(self.ground_station, start, end,
+                                        altitude_degrees=self.min_alt)
 
         # event: 0 (rise), 1 (culminate), 2 (set)
         rise_t = times[next(i for i, event in enumerate(events) if event == 0)]
         set_t = times[next(i for i, event in enumerate(events) if event == 2)]
 
+        rise_t = rise_t.astimezone(self.tz)
+        set_t = set_t.astimezone(self.tz)
+
         return (rise_t, set_t)
 
-    def timestamp(self, time: Time) -> str:
-        """Convert a time to a string."""
+    def timestamp(self, time: datetime) -> str:
+        """Make the given time into a string."""
         # TODO: move into utils?
         dt = time.astimezone(self.tz)
         return dt.strftime("%y/%m/%d-%H:%M:%S")

@@ -4,21 +4,34 @@ Reads this file when starting up the ground station and keeps it updated as
 changes occur.
 """
 
-
 import json
 from typing import Any, Dict
 
-from utils import get_root_dir, get_data_dir
+from pathlib import Path
+
+
+def get_root_dir() -> Path:
+    """Return the root directory of the project."""
+    return Path(__file__).absolute().parent.parent
+
+
+def get_data_dir() -> Path:
+    """Return the path of the data volume."""
+    return Path("/app/data")
 
 
 DEFAULT_SETTINGS_FILE = get_root_dir() / "default.json"
 SETTINGS_FILE = get_data_dir() / "settings.json"
 
+USE_DEFAULTS = False
+
 _cache: Dict[str, Any] = {}
 
 
 def _load_settings() -> Dict[str, Any]:
-    path = SETTINGS_FILE if SETTINGS_FILE.exists() else DEFAULT_SETTINGS_FILE
+    path = DEFAULT_SETTINGS_FILE
+    if SETTINGS_FILE.exists() and not USE_DEFAULTS:
+        path = SETTINGS_FILE
     with open(path, 'r') as file:
         return json.load(file)
 

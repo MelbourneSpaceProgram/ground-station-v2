@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
+from settings import get_data_dir
 from skyfield.api import Timescale, load
-from utils import get_data_dir
 
 TLE_DIR = get_data_dir() / "tle"
 
