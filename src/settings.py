@@ -2,10 +2,6 @@
 
 Reads this file when starting up the ground station and keeps it updated as
 changes occur.
-
-Options (TODO):
-- Position of ground station (longitude/latitude)
-- Satellites to track (use NORAD ID?)
 """
 
 
