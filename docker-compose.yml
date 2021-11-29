@@ -7,3 +7,12 @@ services:
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
+
+  dashboard:
+    build: dashboard
+    volumes:
+      - ./dashboard/.:/usr/app
+    ports:
+      - "8050:8050"
+    environment:
+      - FLASK_ENV=DEBUG
