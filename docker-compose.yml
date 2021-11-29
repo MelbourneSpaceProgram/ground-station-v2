@@ -1,5 +1,5 @@
 services:
-  ground-station:
+  app:
     build: .
     volumes:
       - .:/usr/app
