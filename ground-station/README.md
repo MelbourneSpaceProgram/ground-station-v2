@@ -17,6 +17,12 @@ docker run \
   ground-station
 ```
 
+or simply
+
+```sh
+docker compose up ground-station
+```
+
 ## Testing
 
 To run the test cases, you will need `pytest` installed. Then, calling `pytest .` in the root directory will automatically find and run all tests.

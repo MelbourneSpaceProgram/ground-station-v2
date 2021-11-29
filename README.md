@@ -33,9 +33,10 @@ docker compose down
 
 ## Modules
 
-| Module           | Description                                       |
-| ---------------- | ------------------------------------------------- |
-| `ground-station` | The core of the ground station, written in Python |
+| Module           | Description                    |
+| ---------------- | ------------------------------ |
+| `ground-station` | The core of the ground station |
+| `dashboard`      | The web UI and dashboard       |
 
 ## Todo
 
