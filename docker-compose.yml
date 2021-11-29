@@ -1,8 +1,8 @@
 services:
   ground-station:
-    build: .
+    build: ground-station
     volumes:
-      - .:/usr/app
+      - ./ground-station/.:/usr/app
       - /app/data
     environment:
       - PYTHONDONTWRITEBYTECODE=1

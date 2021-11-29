@@ -25,10 +25,22 @@ Sometimes you will need to rebuild the image to ensure the latest changes are in
 docker compose up --build
 ```
 
+Stopping the project
+
+```sh
+docker compose down
+```
+
+## Modules
+
+| Module           | Description                                       |
+| ---------------- | ------------------------------------------------- |
+| `ground-station` | The core of the ground station, written in Python |
+
 ## Todo
 
+- [ ] Web dashboard
 - [ ] Sat tracker
 - [ ] Antenna controller (Arduino)
 - [ ] Decoding and processing pipelines
   - [ ] NOAA satellites
-- [ ] Web dashboard
