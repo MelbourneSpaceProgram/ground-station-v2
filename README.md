@@ -9,10 +9,10 @@ The easiest way to get started is with Docker.
 - For most devices, see https://docs.docker.com/get-docker/
 - For Raspberry Pi, see https://docs.docker.com/engine/install/debian/
 
-Tests are written using `pytest` which can be installed to your default environment using
+Tests are written using `pytest` which can be installed using
 
 ```sh
-pip install --user pytest
+pip install pytest
 ```
 
 ## Building and running

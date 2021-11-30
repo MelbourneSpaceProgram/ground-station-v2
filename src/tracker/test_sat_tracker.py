@@ -1,9 +1,10 @@
 from datetime import datetime
 
 import pytest
-from skyfield.api import EarthSatellite, Timescale, load
 import settings
+from skyfield.api import EarthSatellite
 
+from . import ts
 from .sat_tracker import SatelliteTracker
 
 # NOAA 20 (43013) TLE as of 26/11/21
@@ -18,12 +19,7 @@ settings.USE_DEFAULTS = True
 
 
 @pytest.fixture
-def ts() -> Timescale:
-    return load.timescale()
-
-
-@pytest.fixture
-def sat(ts: Timescale) -> EarthSatellite:
+def sat() -> EarthSatellite:
     return EarthSatellite(line1, line2, "NOAA 20", ts)
 
 

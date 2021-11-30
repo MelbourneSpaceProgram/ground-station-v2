@@ -1,7 +1,9 @@
 """This module contains classes that store satellite data."""
 
 from settings import get_tle_dir
-from skyfield.api import Timescale, load
+from skyfield.api import load
+
+from . import ts
 
 
 class Satellite():
@@ -13,7 +15,7 @@ class Satellite():
       data -- the loaded EarthSatellite object
     """
 
-    def __init__(self, ID: int, ts: Timescale) -> None:
+    def __init__(self, ID: int) -> None:
         """Init satellite with a name and ID.
 
         Checks whether the TLE is up to date and redownloads if necessary. TLEs
