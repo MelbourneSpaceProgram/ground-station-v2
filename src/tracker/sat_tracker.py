@@ -1,9 +1,9 @@
 """This module contains the logic for tracking satellite passes."""
 
 from datetime import datetime, timedelta
-from typing import Dict, Tuple
+from typing import Dict, Tuple, cast
 
-import pytz  # type: ignore
+import pytz
 import settings
 from skyfield.api import EarthSatellite, Time, Timescale, load, wgs84
 
@@ -42,36 +42,42 @@ class SatelliteTracker():
         self.ground_station = wgs84.latlon(lat, lon)
 
         # Init timezone
-        tz = settings.get("timezone")
+        tz = cast(str, settings.get("timezone"))
         self.tz = pytz.timezone(tz)
 
         # Init min_alt
         self.min_alt = settings.get("min_alt")
 
         # Load satellites
-        self.sats: Dict[str, Satellite] = {}
-        self.passes: Dict[str, Tuple[datetime, datetime]] = {}
+        self.sats: Dict[int, Satellite] = {}
+        self.passes: Dict[int, Tuple[datetime, datetime]] = {}
         for ID in settings.get("satellites"):
+            ID = cast(int, ID)
             sat = Satellite(ID, self.ts)
             self.sats[ID] = sat
             self.passes[ID] = self.compute_next_pass(sat.data)
 
-        print("Loaded: " + ", ".join([ID for ID in self.sats.keys()]))
+        print("Loaded: " + ", ".join([str(ID) for ID in self.sats.keys()]))
 
     def _convert_time(self, time: datetime) -> Time:
         dt = self.tz.localize(time)
         return self.ts.from_datetime(dt)
 
-    def add_satellite(self, ID: str) -> None:
+    def timestamp(self, time: datetime) -> str:
+        """Make the given time into a string."""
+        dt = time.astimezone(self.tz)
+        return dt.strftime("%y/%m/%d-%H:%M:%S")
+
+    def add_satellite(self, ID: int) -> None:
         """Add satellite to tracking list."""
         sat = Satellite(ID, self.ts)
         self.sats[ID] = sat
-        settings.set("satellites", self.sats.keys())
+        settings.set("satellites", list(self.sats.keys()))
 
-    def remove_satellite(self, ID: str) -> None:
+    def remove_satellite(self, ID: int) -> None:
         """Remove satellite from tracking list."""
         self.sats.pop(ID)
-        settings.set("satellites", self.sats.keys())
+        settings.set("satellites", list(self.sats.keys()))
 
     def compute_next_pass(self, sat: EarthSatellite, t0: datetime = None,
                           t1: datetime = None) -> Tuple[datetime, datetime]:
@@ -87,23 +93,17 @@ class SatelliteTracker():
                                         altitude_degrees=self.min_alt)
 
         # event: 0 (rise), 1 (culminate), 2 (set)
-        rise_t = times[next(i for i, event in enumerate(events) if event == 0)]
-        set_t = times[next(i for i, event in enumerate(events) if event == 2)]
+        AOS = times[next(i for i, event in enumerate(events) if event == 0)]
+        LOS = times[next(i for i, event in enumerate(events) if event == 2)]
 
-        rise_t = rise_t.astimezone(self.tz)
-        set_t = set_t.astimezone(self.tz)
+        AOS = AOS.astimezone(self.tz)
+        LOS = LOS.astimezone(self.tz)
 
-        return (rise_t, set_t)
-
-    def timestamp(self, time: datetime) -> str:
-        """Make the given time into a string."""
-        # TODO: move into utils?
-        dt = time.astimezone(self.tz)
-        return dt.strftime("%y/%m/%d-%H:%M:%S")
+        return (AOS, LOS)
 
     def update(self) -> None:
         """Update satellites and check for events."""
         print("Tracking")
         for ID, (rise_t, set_t) in self.passes.items():
-            print(ID + ": " + self.timestamp(rise_t) + ", " +
+            print(str(ID) + ": " + self.timestamp(rise_t) + ", " +
                   self.timestamp(set_t))

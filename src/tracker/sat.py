@@ -1,11 +1,7 @@
 """This module contains classes that store satellite data."""
 
-from pathlib import Path
-
-from settings import get_data_dir
+from settings import get_tle_dir
 from skyfield.api import Timescale, load
-
-TLE_DIR = get_data_dir() / "tle"
 
 
 class Satellite():
@@ -17,7 +13,7 @@ class Satellite():
       data -- the loaded EarthSatellite object
     """
 
-    def __init__(self, ID: str, ts: Timescale) -> None:
+    def __init__(self, ID: int, ts: Timescale) -> None:
         """Init satellite with a name and ID.
 
         Checks whether the TLE is up to date and redownloads if necessary. TLEs
@@ -25,16 +21,13 @@ class Satellite():
         """
         self.ID = ID
 
-        if not TLE_DIR.exists():
-            Path.mkdir(TLE_DIR)
-
         url = f'https://celestrak.com/satcat/tle.php?CATNR={ID}'
-        filename = TLE_DIR / f'{ID}.txt'
+        filename = get_tle_dir() / f'{ID}.txt'
         self.data = load.tle_file(url, filename=filename.as_posix())[0]
 
         if not self.data:
             # REVIEW: what to do if loading TLE fails?
-            raise Exception("Failed to load TLE for " + ID)
+            raise Exception("Failed to load TLE for " + str(ID))
 
         # Check if the TLE is out of date
         if abs(ts.now() - self.data.epoch) > 14:

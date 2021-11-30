@@ -12,10 +12,7 @@ class GroundStation():
     """Where everything happens."""
 
     def __init__(self) -> None:
-        """Init the ground station.
-
-        Loads settings from disk and constructs required objects.
-        """
+        """Init the ground station."""
         self.running = False
 
         # Ensure that things are cleaned up if interrupted

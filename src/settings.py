@@ -20,6 +20,14 @@ def get_data_dir() -> Path:
     return Path("/app/data")
 
 
+def get_tle_dir() -> Path:
+    """Return the directory containing TLEs."""
+    tle_dir = get_data_dir() / "tle"
+    if not tle_dir.exists():
+        Path.mkdir(tle_dir)
+    return tle_dir
+
+
 DEFAULT_SETTINGS_FILE = get_root_dir() / "default.json"
 SETTINGS_FILE = get_data_dir() / "settings.json"
 
@@ -36,7 +44,7 @@ def _load_settings() -> Dict[str, Any]:
         return json.load(file)
 
 
-def get(key: str) -> Dict[str, Any]:
+def get(key: str) -> Any:
     """Retrieve the given setting."""
     global _cache
     if not _cache:
