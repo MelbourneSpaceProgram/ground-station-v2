@@ -15,7 +15,7 @@ Tests are written using `pytest` which can be installed using
 pip install pytest
 ```
 
-https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git
+https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git \
 Clone this repo and install modules
 
 ### Install RPi.GPIO modules using this guide
