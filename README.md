@@ -15,6 +15,12 @@ Tests are written using `pytest` which can be installed using
 pip install pytest
 ```
 
+https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git
+Clone this repo and install modules
+
+https://sourceforge.net/p/raspberry-gpio-python/wiki/install/
+Install RPi.GPIO modules using this guide
+
 ## Building and running
 
 Once you have Docker installed, running the project involves
