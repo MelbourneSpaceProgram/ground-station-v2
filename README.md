@@ -18,8 +18,14 @@ pip install pytest
 https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git
 Clone this repo and install modules
 
+# Install RPi.GPIO modules using this guide
 https://sourceforge.net/p/raspberry-gpio-python/wiki/install/
-Install RPi.GPIO modules using this guide
+Main command needed to install:
+```sh
+$ sudo apt-get install python-rpi.gpio python3-rpi.gpio
+````
+RPi.GPIO also comes preinstalled in rasbian OS, so this step may also be skippable.
+
 
 ## Building and running
 
