@@ -60,6 +60,9 @@ Calling `pytest` in the root directory will automatically find and run all tests
 pytest .
 ```
 
+###Antenna Positioning (Arduino)
+The antenna's position (elevation and azimuth) is controlled by two servo motors and an arduino. The build files are TBU (to be uploaded), but the setup requires communication with the Raspberry Pi.
+
 ## Modules
 
 | Module    | Description             |
