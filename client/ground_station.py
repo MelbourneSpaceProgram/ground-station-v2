@@ -4,7 +4,9 @@ import signal
 import sys
 import time
 from timeit import default_timer as timer
+from multiprocessing import Process
 
+RUN_EPS = False
 
 class GroundStation():
     """Where everything happens."""
@@ -17,8 +19,18 @@ class GroundStation():
         signal.signal(signal.SIGINT, self.clean_up)
         signal.signal(signal.SIGTERM, self.clean_up)
 
+        # Create separate process for EPS script
+        if RUN_EPS:
+            from EPS import EPS_script
+            self.EPS = Process(target=EPS_script.start(), name="EPS")
+
     def start(self) -> None:
         """Start the ground station."""
+
+        # Start the EPS process
+        if RUN_EPS:
+            self.EPS.start()
+
         self.running = True
         self.curr_time = timer()
         self.run()
@@ -26,6 +38,10 @@ class GroundStation():
     def clean_up(self, signal, frame) -> None:  # type: ignore
         """Ensure resources are closed before exiting."""
         print("Cleaning up")
+
+        if RUN_EPS:
+            self.EPS.join()
+
         sys.exit(0)
 
     def run(self) -> None:

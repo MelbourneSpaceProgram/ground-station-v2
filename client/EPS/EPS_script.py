@@ -96,12 +96,14 @@ def light_led(v):
         GPIO.output(RED_LED, GPIO.HIGH)
 
 #Initialize all inputs/outputs and interrupts
-def setup():
+def start():
     GPIO.setup(RED_LED, GPIO.OUT)
     GPIO.setup(YELLOW_LED, GPIO.OUT)
     GPIO.setup(GREEN_LED, GPIO.OUT)
     GPIO.setup(OFF_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(OFF_BUTTON, GPIO.FALLING, callback=turn_off_rpi, bouncetime=100)
+
+    loop()
     
 #Continuous loop for script to follow during on time
 def loop():
@@ -116,5 +118,4 @@ def loop():
 
 
 if __name__ == '__main__':
-    setup()
-    loop()
+    start()
