@@ -15,20 +15,10 @@ Tests are written using `pytest` which can be installed using
 pip install pytest
 ```
 
-https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git \
-Main command needed to install:
-```sh
-sudo pip3 install adafruit-circuitpython-ads1x15
-```
-
-### Install RPi.GPIO modules using this guide
-https://sourceforge.net/p/raspberry-gpio-python/wiki/install/ \
-Main command needed to install:
-```sh
-$ sudo apt-get install python-rpi.gpio python3-rpi.gpio
-````
-RPi.GPIO also comes preinstalled in rasbian OS, so this step may also be skippable.
-
+### EPS
+The EPS script uses the following libraries:
+- [Adafruit CircuitPython ADS1x15](https://github.com/adafruit/Adafruit_CircuitPython_ADS1x15.git)
+- [Raspberry GPIO](https://sourceforge.net/p/raspberry-gpio-python/wiki/install/) (installed by default on Raspbian?)
 
 ## Building and running
 
