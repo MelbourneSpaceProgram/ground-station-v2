@@ -1,2 +1,6 @@
-skyfield==1.40
-pytz==2021.3
+# EPS dependencies
+pandas
+numpy
+matplotlib
+adafruit-circuitpython-busdevice
+adafruit-circuitpython-ads1x15

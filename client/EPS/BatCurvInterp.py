@@ -4,7 +4,7 @@ import numpy as np
 class BatCurvInterp:
 
     def __init__(self, poly_order) -> None:
-        self.orig_data_df = df = pd.read_csv('Battery Curve.csv')
+        self.orig_data_df = df = pd.read_csv('client/EPS/Battery Curve.csv')
         self.poly_order = poly_order
         self.poly = self.fit_poly(df['Cell Voltage (V)'], df['Battery Charge (%)'], poly_order)
 

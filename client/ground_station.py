@@ -5,8 +5,6 @@ import sys
 import time
 from timeit import default_timer as timer
 
-from tracker.sat_tracker import SatelliteTracker
-
 
 class GroundStation():
     """Where everything happens."""
@@ -18,8 +16,6 @@ class GroundStation():
         # Ensure that things are cleaned up if interrupted
         signal.signal(signal.SIGINT, self.clean_up)
         signal.signal(signal.SIGTERM, self.clean_up)
-
-        self.sat_tracker = SatelliteTracker()
 
     def start(self) -> None:
         """Start the ground station."""
@@ -39,5 +35,4 @@ class GroundStation():
             elapsed = timer() - self.curr_time
             print(elapsed)
             self.curr_time = timer()
-            self.sat_tracker.update()
             time.sleep(1)
