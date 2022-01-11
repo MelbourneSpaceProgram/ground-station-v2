@@ -21,8 +21,8 @@ class GroundStation():
 
         # Create separate process for EPS script
         if RUN_EPS:
-            from EPS import EPS_script
-            self.EPS = Process(target=EPS_script.start(), name="EPS")
+            from EPS import BatteryLoop
+            self.EPS = Process(target=BatteryLoop.start(), name="EPS")
 
     def start(self) -> None:
         """Start the ground station."""

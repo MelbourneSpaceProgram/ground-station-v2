@@ -6,7 +6,6 @@ from BatCurvInterp import BatCurvInterp
 import numpy as np
 import RPi.GPIO as GPIO
 import subprocess
-GPIO.setmode(GPIO.BCM)
 
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
@@ -20,7 +19,7 @@ ads = ADS.ADS1115(i2c)
 # Create a differential channel on Pin 0 and Pin 1 for 1st cell
 chan_1 = AnalogIn(ads, ADS.P0, ADS.P1)
 # Create a differential channel on Pin 1 and Pin 2 for 2nd cell
-chan_2 = AnalogIn(ads, ADS.P1, ADS.P2)
+chan_2 = AnalogIn(ads, ADS.P1, ADS.P3)
 
 #Create Battery Charge Curve Interpolator (converts current voltage to percentage charge remaining in specific cell)
 btinterp = BatCurvInterp(8) #8 represents the order of polynomial (8 was identified as the best during testing)
@@ -37,12 +36,13 @@ ads.gain = gain
 
 
 # Set LED Pins
-RED_LED = 1
-YELLOW_LED = 2
-GREEN_LED = 3
+GPIO.setmode(GPIO.BCM)
+RED_LED = 17
+YELLOW_LED = 27
+GREEN_LED = 22
 
 # Set Off Button
-OFF_BUTTON = 4
+OFF_BUTTON = 10
 
 #Set Critical Battery Voltage
 CRITIC_VOLT = 6.7 
@@ -111,7 +111,7 @@ def loop():
         v1 = chan_1.voltage #Cell 1
         v2 = chan_2.voltage #Cell 2
         v_t = v1 + v2 #Combined Total Voltage
-        print("Current voltage of 2 cell battery pack is: {f}".format(v_t))
+        print(f"Current voltage of 2 cell battery pack is: {v_t}")
         print(f"{find_power_percent(v1,v2)}\% power remaining")
         light_led(v_t)
         time.sleep(READING_DELAY) #Could be good idea to do multithreading to run all processes simultaniously
