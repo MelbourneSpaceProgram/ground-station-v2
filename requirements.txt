@@ -1,6 +1,0 @@
-# EPS dependencies
-pandas
-numpy
-matplotlib
-adafruit-circuitpython-busdevice
-adafruit-circuitpython-ads1x15

@@ -1,6 +1,5 @@
 from BatCurvInterp import BatCurvInterp
 import numpy as np
-import matplotlib.pylab as plt
 
 vals = np.linspace(3.339999914, 4.199, 100)
 
