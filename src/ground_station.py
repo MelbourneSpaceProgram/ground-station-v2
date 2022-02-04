@@ -6,7 +6,7 @@ import time
 from multiprocessing import Process
 from timeit import default_timer as timer
 
-import tracker
+import tracker.tracker as tracker
 
 # Enable EPS if running on Pi
 RUN_EPS = False
@@ -58,11 +58,3 @@ class GroundStation():
             print(elapsed)
             self.curr_time = timer()
             time.sleep(1)
-
-
-def is_raspberrypi():
-    try:
-        with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
-            if 'raspberry pi' in m.read().lower(): return True
-    except Exception: pass
-    return False
