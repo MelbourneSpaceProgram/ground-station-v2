@@ -3,16 +3,18 @@
 import signal
 import sys
 import time
-from timeit import default_timer as timer
 from multiprocessing import Process
+from timeit import default_timer as timer
+
+import tracker
 
 # Enable EPS if running on Pi
-RUN_EPS = is_raspberrypi()
+RUN_EPS = False
 
 class GroundStation():
     """Where everything happens."""
 
-    def __init__(self) -> None:
+    def __init__(self, run_eps=False) -> None:
         """Init the ground station."""
         self.running = False
 
@@ -21,6 +23,7 @@ class GroundStation():
         signal.signal(signal.SIGTERM, self.clean_up)
 
         # Create separate process for EPS script
+        RUN_EPS = run_eps
         if RUN_EPS:
             from EPS import BatteryLoop
             self.EPS = Process(target=BatteryLoop.start(), name="EPS")
@@ -31,6 +34,8 @@ class GroundStation():
         # Start the EPS process
         if RUN_EPS:
             self.EPS.start()
+
+        print(tracker.compute_next_pass(43053))
 
         self.running = True
         self.curr_time = timer()
