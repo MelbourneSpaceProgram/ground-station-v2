@@ -1,8 +1,8 @@
 class Stepper:
     
-    def __init__(self) -> None:
-        self.current_pos = 0 #angle (rad) from angle origin
-        pass
+	def __init__(self) -> None:
+		self.current_pos = 0 #angle (rad) from angle origin
+		pass
 
 	def setPos(self) -> None:
 		self.current_pos = 0
