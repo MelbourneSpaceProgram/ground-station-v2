@@ -6,9 +6,6 @@ from stepper import Stepper
 
 az_motor = Stepper()
 el_motor = Stepper()
-
-def actuate_motor(motor_id, angle):
-	pass #use library to actuate stepper
 	
 def interpolate_pos_data(orig_arr):
 	return interpolate.interp1d(orig_arr)
@@ -19,5 +16,5 @@ def main():
 	el_func = interpolate.interp1d(positions[:, [0,2]], kind='cubic')
 	
 	while(time.localtime() < positions[-1,0]):
-		actuate_motor(az_motor, az_func(time.localtime()))
-		actuate_motor(el_motor, el_func(time.localtime()))
+		az_motor.moveTo(az_func(time.localtime()))
+		el_motor.moveTo(el_func(time.localtime()))
