@@ -1,12 +1,8 @@
 from email.utils import localtime
 from scipy import interpolate
 import time
-
-class Stepper:
-    
-    def __init__(self) -> None:
-        pass
-
+from stepper import Stepper
+		
 
 az_motor = Stepper()
 el_motor = Stepper()
