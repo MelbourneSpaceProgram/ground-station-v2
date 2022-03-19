@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [72, 12.0]
     rotation: 0
     state: enabled
 
@@ -45,23 +45,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [600, 104.0]
-    rotation: 0
-    state: enabled
-- name: analog_quadrature_demod_cf_0_0
-  id: analog_quadrature_demod_cf
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    gain: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [544, 360.0]
+    coordinate: [608, 104.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -80,7 +64,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 440.0]
+    coordinate: [880, 384.0]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -103,7 +87,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [72, 116]
+    coordinate: [40, 212.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_demod_0
@@ -126,7 +110,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 428.0]
+    coordinate: [592, 356.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -147,7 +131,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 124.0]
+    coordinate: [296, 220.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -244,7 +228,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 76.0]
+    coordinate: [880, 76.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0
@@ -321,7 +305,7 @@ blocks:
     tr_mode: qtgui.TRIG_MODE_FREE
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
-    type: float
+    type: complex
     update_time: '0.10'
     width1: '1'
     width10: '1'
@@ -341,18 +325,17 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 284.0]
+    coordinate: [880, 220.0]
     rotation: 0
     state: enabled
 
 connections:
 - [analog_quadrature_demod_cf_0, '0', qtgui_time_sink_x_0, '0']
-- [analog_quadrature_demod_cf_0_0, '0', qtgui_time_sink_x_0_0, '0']
 - [blocks_file_source_0, '0', digital_gfsk_mod_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_file_sink_0, '0']
 - [digital_gfsk_mod_0, '0', analog_quadrature_demod_cf_0, '0']
-- [digital_gfsk_mod_0, '0', analog_quadrature_demod_cf_0_0, '0']
 - [digital_gfsk_mod_0, '0', digital_gfsk_demod_0, '0']
+- [digital_gfsk_mod_0, '0', qtgui_time_sink_x_0_0, '0']
 
 metadata:
   file_format: 1
